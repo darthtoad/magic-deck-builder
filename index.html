@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="build/js/vendor.min.js"></script>
+    <script type="text/javascript" src="build/js/app.js"></script>
+    <link href="build/css/vendor.css" rel="stylesheet" type="text/css">
+    <link href="build/css/app.css" rel="stylesheet" type="text/css">
+    <title>Deck Builder</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <form id="form">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name"><br>
+        <label for="colors">Colors:</label>
+        <input type="text" name="colors" value="Blue" id="colors"><br>
+        <label for="cmc">Converted Mana Cost:</label>
+        <input type="number" name="cmc" value="2" id="cmc"><br>
+        <label for="type">Card type:</label>
+        <input type="text" name="type" value="Creature" id="type"><br>
+        <label for="rarity">Rarity:</label>
+        <input type="text" name="rarity" value="Uncommon" id="rarity"><br>
+        <label for="setName">Set:</label>
+        <input type="text" name="setName" value="Tempest" id="setName"><br>
+        <label for="text">Card Text:</label>
+        <input type="text" name="text" value="Flying" id="text"><br>
+        <label for="power">Power:</label>
+        <input type="number" name="power" value="2" id="power"><br>
+        <label for="toughness">Toughness:</label>
+        <input type="number" name="toughness" value="2" id="toughness"><br>
+        <label for="language">Language:</label>
+        <input type="text" name="language" value="English" id="language"><br>
+        <label for="legality">Legality:</label>
+        <input type="text" name="legality" value="Modern" id="legality"><br>
+        <label for="pageSize">Number of Results:</label>
+        <input type="number" name="pageSize" value="1" id="pageSize">
+        <button type="submit">Search</button>
+      </form>
+      <div id="result">
+      </div>
+      <form id="clear">
+        <button type="submit">Clear Results</button>
+      </form>
+    </div>
+  </body>
+</html>
