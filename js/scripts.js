@@ -20,10 +20,6 @@ export class Deck {
     this.library = [];
   }
 
-  addToCards(card) {
-    this.cards.push(card);
-  }
-
   removeCard(card) {
     const index = this.cards.indexOf(card);
     if (index > -1) {

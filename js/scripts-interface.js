@@ -88,7 +88,7 @@ $(document).ready(function(){
     console.log(name);
 
     let request = new XMLHttpRequest();
-    let url = 'http://api.magicthegathering.io/v1/cards?name=' + name + '&colors=' + colors + '&cmc=' + cmc + '&type=' + type + '&rarity=' + rarity + '&setName=' + set + '&text=' + text + '&power=' + power + '&toughness=' + toughness + '&language=' + language + '&legality=' + legality + '&pageSize=' + results;
+    let url = 'http://api.magicthegathering.io/v1/cards?name=' + name + '&colors=' + colors + '&cmc=' + cmc + '&type=' + type + '&rarity=' + rarity + '&setName=' + set + '&text=' + text + '&power=' + power + '&toughness=' + toughness + '&legality=' + legality + '&pageSize=' + results;
     console.log(url);
 
     request.onreadystatechange = function() {
@@ -104,17 +104,21 @@ $(document).ready(function(){
       let i = 0;
       response.cards.forEach(function(card){
         $("#result").append(`<div class="row"><img src="${card.imageUrl}" alt="Magic Card" /><br>
-        Name: ${card.name}<br>Color: ${card.colors}<br>Converted Magic Cost: ${card.cmc}<br>Type: ${card.type}<br>Rarity: ${card.rarity}<br>Set: ${card.set}<br>Card Text: ${card.text}<br>Power/Toughness: ${card.power}/${card.toughness}<br>Language: ${card.language}<br>Legality:  ${card.legality}</div>`);
+        Name: ${card.name}<br>Color: ${card.colors}<br>Converted Magic Cost: ${card.cmc}<br>Type: ${card.type}<br>Rarity: ${card.rarity}<br>Set: ${card.set}<br>Card Text: ${card.text}<br>Power/Toughness: ${card.power}/${card.toughness}<br>`);
         if (decks.length > 0) {
-          let j = 0;
-          decks.forEach(function(deck){
-            $("#result").append(`<br><form id="card${i}deck${j}"><button type="submit">Add ${card.name} to ${deck.name}</button></form><hr>`);
+          debugger;
+          for (let j = 0; j < decks.length; j++) {
+            let currentDeck = decks[j];
+            $("#result").append(`<br><form id="card${i}deck${j}"><button type="submit">Add ${card.name} to ${currentDeck.name}</button></form><hr>`);
             $("#card" + i + "deck" + j).submit(function(event){
               event.preventDefault();
+              console.log(decks[j].name + " Number: " + j);
               decks[j].cards.push(card.id);
-              console.log(decks[j]);
             })
-          })
+          }
+          // decks.forEach(function(deck){
+          //
+          // })
         }
         i++;
       })
@@ -151,7 +155,11 @@ $(document).ready(function(){
         request.send();
         let getElements = function(response) {
           $("#display-deck").append(`<div class="row"><img src="${response.card.imageUrl}" alt="Magic Card" /><br>
-          Name: ${response.card.name}<br>Color: ${response.card.colors}<br>Converted Magic Cost: ${response.card.cmc}<br>Type: ${response.card.type}<br>Rarity: ${response.card.rarity}<br>Set: ${response.card.set}<br>Card Text: ${response.card.text}<br>Power/Toughness: ${response.card.power}/${response.card.toughness}<br>Language: ${response.card.language}<br>Legality:  ${response.card.legality}</div>`);
+          Name: ${response.card.name}<br>Color: ${response.card.colors}<br>Converted Magic Cost: ${response.card.cmc}<br>Type: ${response.card.type}<br>Rarity: ${response.card.rarity}<br>Set: ${response.card.set}<br>Card Text: ${response.card.text}<br>Power/Toughness: ${response.card.power}/${response.card.toughness}</div><br><form id="remove-card-${response.card.name}"><button type="submit">Remove Card from Deck</button></form>`);
+          $("#remove-card-" + response.card.name).submit(function(event){
+            alert(`${response.card.name} is being removed from the deck`);
+            deck.removeCard(response.card.id);
+          })
         }
       })
     })
