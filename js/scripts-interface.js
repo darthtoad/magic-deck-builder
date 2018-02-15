@@ -1,7 +1,11 @@
+import { Deck } from "./../js/scripts.js";
+
 $(document).ready(function(){
+  let decks = [];
   $("#form").submit(function(event){
     event.preventDefault();
     $("#result").empty();
+    $("#display-deck").empty();
     let name = $('#name').val();
     let colors = $("#colors").val();
     let cmc = parseInt($("#cmc").val());
@@ -97,10 +101,59 @@ $(document).ready(function(){
     request.open("GET", url, true);
     request.send();
     let getElements = function(response) {
+      let i = 0;
       response.cards.forEach(function(card){
         $("#result").append(`<div class="row"><img src="${card.imageUrl}" alt="Magic Card" /><br>
-        Name: ${card.name}<br>Color: ${card.colors}<br>Converted Magic Cost: ${card.cmc}<br>Type: ${card.type}<br>Rarity: ${card.rarity}<br>Set: ${card.set}<br>Card Text: ${card.text}<br>Power/Toughness: ${card.power}/${card.toughness}<br>Language: ${card.language}<br>Legality:  ${card.legality}</div><hr>`);
+        Name: ${card.name}<br>Color: ${card.colors}<br>Converted Magic Cost: ${card.cmc}<br>Type: ${card.type}<br>Rarity: ${card.rarity}<br>Set: ${card.set}<br>Card Text: ${card.text}<br>Power/Toughness: ${card.power}/${card.toughness}<br>Language: ${card.language}<br>Legality:  ${card.legality}</div>`);
+        if (decks.length > 0) {
+          let j = 0;
+          decks.forEach(function(deck){
+            $("#result").append(`<br><form id="card${i}deck${j}"><button type="submit">Add ${card.name} to ${deck.name}</button></form><hr>`);
+            $("#card" + i + "deck" + j).submit(function(event){
+              event.preventDefault();
+              decks[j].cards.push(card.id);
+              console.log(decks[j]);
+            })
+          })
+        }
+        i++;
       })
     }
+  })
+  $("#create-deck").submit(function(event){
+    event.preventDefault();
+    let name = $("#deck-name").val();
+    const description = $("#description").val();
+    let deck = new Deck(name, description);
+    decks.push(deck);
+    let newName = deck.name.replace(/\s/g, "-");
+    $("#show-deck").append(`<form id="` + newName + `"><button type="submit">Show ${deck.name}</button></form>`);
+    alert(`You created new deck ${deck.name}`);
+    $("#" + newName).submit(function(event){
+      event.preventDefault();
+      // debugger;
+      $("#display-deck").empty();
+      $("#result").empty();
+      let cardNames = [];
+      deck.cards.forEach(function(card){
+        let request = new XMLHttpRequest();
+        let url = 'http://api.magicthegathering.io/v1/cards/' + card;
+        console.log(url);
+
+        request.onreadystatechange = function() {
+          if (this.readyState === 4 && this.status === 200) {
+            let response = JSON.parse(this.responseText);
+            getElements(response);
+            console.log(response);
+          }
+        }
+        request.open("GET", url, true);
+        request.send();
+        let getElements = function(response) {
+          $("#display-deck").append(`<div class="row"><img src="${response.card.imageUrl}" alt="Magic Card" /><br>
+          Name: ${response.card.name}<br>Color: ${response.card.colors}<br>Converted Magic Cost: ${response.card.cmc}<br>Type: ${response.card.type}<br>Rarity: ${response.card.rarity}<br>Set: ${response.card.set}<br>Card Text: ${response.card.text}<br>Power/Toughness: ${response.card.power}/${response.card.toughness}<br>Language: ${response.card.language}<br>Legality:  ${response.card.legality}</div>`);
+        }
+      })
+    })
   })
 })

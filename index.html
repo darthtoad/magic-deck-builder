@@ -34,11 +34,24 @@
         <label for="legality">Legality:</label>
         <input type="text" name="legality" value="Modern" id="legality"><br>
         <label for="pageSize">Number of Results:</label>
-        <input type="number" name="pageSize" value="1" id="pageSize">
+        <input type="number" name="pageSize" value="1" id="pageSize"><br>
         <button type="submit">Search</button>
       </form>
+      <hr>
+      <form id="create-deck">
+          <label for="deck-name">Name of deck:</label>
+          <input type="text" name="deck-name" id="deck-name"><br>
+          <label for="description">Description:</label>
+          <input type="text" name="description" id="description"><br>
+          <button type="submit">Create Deck</button>
+      </form>
+      <div id="show-deck">
+      </div>
+      <div id="display-deck">
+      </div>
       <div id="result">
       </div>
+      <hr>
       <form id="clear">
         <button type="submit">Clear Results</button>
       </form>
