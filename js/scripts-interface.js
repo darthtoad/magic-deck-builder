@@ -154,14 +154,22 @@ $(document).ready(function(){
         request.open("GET", url, true);
         request.send();
         let getElements = function(response) {
+          const newName = response.card.name.replace(/\s/g, "-");
           $("#display-deck").append(`<div class="row"><img src="${response.card.imageUrl}" alt="Magic Card" /><br>
-          Name: ${response.card.name}<br>Color: ${response.card.colors}<br>Converted Magic Cost: ${response.card.cmc}<br>Type: ${response.card.type}<br>Rarity: ${response.card.rarity}<br>Set: ${response.card.set}<br>Card Text: ${response.card.text}<br>Power/Toughness: ${response.card.power}/${response.card.toughness}</div><br><form id="remove-card-${response.card.name}"><button type="submit">Remove Card from Deck</button></form>`);
-          $("#remove-card-" + response.card.name).submit(function(event){
-            alert(`${response.card.name} is being removed from the deck`);
-            deck.removeCard(response.card.id);
-          })
-        }
-      })
+          Name: ${response.card.name}<br>Color: ${response.card.colors}<br>Converted Magic Cost: ${response.card.cmc}<br>Type: ${response.card.type}<br>Rarity: ${response.card.rarity}<br>Set: ${response.card.set}<br>Card Text: ${response.card.text}<br>Power/Toughness: ${response.card.power}/${response.card.toughness}</div><br><form id="remove-card-` + newName + `"><button type="submit">Remove Card from Deck</button></form>`);
+          $("#remove-card-" + newName).submit(function(event){
+          for (let k = 0; k < deck.cards.length; k++) {
+            const newName1 = deck.cards[k].name;
+            console.log(newName1);
+            alert(newName1 + ` is being removed from the deck`);
+            if (newName === newName1) {
+              deck.removeCard(deck.cards[k]);
+              k = 1000;
+            }
+          }
+        })
+      }
     })
+  })
   })
 })
